@@ -71,13 +71,7 @@ function enterTank() {
         draw()
         //setTimeout(,5000);
     }
-    /*if(arrEnterTank[0]=="а1")
-    {
-        coordTank[0]=33;
-        coordTank[1]=33;
-        draw();
-    }*/
-
+    
 }
 
 
