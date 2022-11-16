@@ -5,12 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Морской бой</title>
+    <title>Танковый бой</title>
 </head>
 
 <body>
+    <form name="form">
+        <textarea name="textarea1" id="textarea1" style="position:absolute;left:60px;top:450px;width:300px;height:50px;" readonly disabled=disabled>Чтобы ознакомиться с правилами игры - нажмите кнопку "Правила". Чтобы начать игру - нажмите кнопку "Играть".</textarea>
+        <input type="text" name="textarea2" id="textarea2" style="font-size:20px ; position:absolute;left:460px;top:465px;width:150px;height:35px;"></input>
+        <input type="text" name="textCount" id="textCount" style="font-size: 30px; text-align:center; position:absolute;left:375px;top:465px;width:70px;height:25px;" disabled="disabled" ></input>
+        <button type="button" name="button1" id="button1" style="position:absolute;left:630px;top:460px;width:130px;height:20px">Играть</button>
+        <button type="button" name="button2" id="button2" style="position:absolute;left:630px;top:485px;width:130px;height:20px">Правила</button>
+    </form>
 
-    <canvas id="canvas" width="800" height="500" style="border: 5px solid rgb(212, 212, 212)"></canvas>
+    <canvas id="canvas" width="800" height="520" style="border: 5px solid rgb(212, 212, 212)"></canvas>
     <script src="script.js"></script>
 </body>
 
