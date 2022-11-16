@@ -12,7 +12,7 @@ imgMiss.src = "miss.png";
 imgHit.src = "hit.png";
 
 //Заголовок
-var grd = ctx.createLinearGradient(0, 0, 400, 0); //градиентная заливка
+var grd = ctx.createLinearGradient(150, 0, 300, 0); //градиентная заливка
 grd.addColorStop(0, "Olive")
 grd.addColorStop(1, "green")
 ctx.strokeStyle = grd;
@@ -20,18 +20,17 @@ ctx.font = "bold 25pt Comic Sans MS";
 ctx.textAlign = "center";
 ctx.strokeText("Танковый бой", cvs.width / 2, 40);
 
-//стартовая строка
-ctx.font = "italic 13pt Arial";
-var textColor = "black";
-ctx.fillStyle = textColor;
-ctx.textAlign = "left";
-ctx.fillText("Для начала нажмите любую клавишу...", 20, cvs.height - 20);
-
-//подписи полей
+//подписи
 ctx.font = "italic 10pt Arial";
 ctx.textAlign = "left";
-ctx.fillText("поле игрока", 50, cvs.height - 95);
-ctx.fillText("поле противника", 450, cvs.height - 95);
+ctx.fillText("поле игрока", 50, cvs.height - 115);
+ctx.fillText("поле противника", 450, cvs.height - 115);
+ctx.fillText("поле ввода координат:", 450, cvs.height - 70);
+ctx.font = "bold 10pt Arial";
+ctx.fillText("С Ч Ё Т:", 375, cvs.height - 70);
+ctx.font = "small-caps 8pt Arial";
+ctx.fillText("игрок", 365, cvs.height - 28);
+ctx.fillText("недруг", 404, cvs.height - 28);
 
 //вставка полей
 let xBegin = 4;
@@ -54,14 +53,15 @@ for (let i = 0; i < 36; i++) {
     else if (i < 30) arrCoord[i] = "д" + parseInt(i - 23);
     else if (i < 36) arrCoord[i] = "е" + parseInt(i - 29);
 }
+document.getElementById('button2').onclick =
+    function rules() { alert("GFDgfdg") }
 
-//запуск при нажатии клавиши
-document.addEventListener("keydown", start, { once: true }) //once - функция исполнится 1 раз
-function start() {
-    var n = ctx.clearRect(15, cvs.height - 33, 380, 20); //затирание стартовой надписи
-    setTimeout(() => input(0, 4, `Введите координаты танка: `), 5);
-    //задержка, чтобы затирка стартовой надписи прошла до запуска функции
-}
+//запуск при нажатии кнопки
+document.getElementById('button1').onclick =
+    function start() {
+        input(0, 4, `Введите координаты танка: `)
+        //var n = ctx.clearRect(15, cvs.height - 33, 380, 20); //затирание стартовой надписи
+    }
 
 //функция ввода и расстановки id: 0-расстановка танков, 1-прием координат от пользователя
 var arrCoordPlayer = new Array;
@@ -80,7 +80,6 @@ function input(id, n, text) {
             ctx.drawImage(imgTank, xBegin + coordX, yBegin + coordY);
         }
     }
-
     if (id == 0) setTimeout(() => play(), 500);
     else if (id == 1) return inputPlayer;
 }
@@ -151,12 +150,6 @@ function gunFunc() {
     while (checkRepeatFunc(shot) == true);
     let checkShot = checkShotFunc(0, shot);
     let checkHitShot = checkHitShotFunc(shot)
-
-
-    //if (checkRepeat == true) {
-    //  alert("Повторный ввод!");
-    //shot = input(1, 1, "Введите координаты выстрела");
-    //}
     arrMotionPl[arrMotionPl.length] = shot;
     console.log("play | " + shot + " массив: " + arrMotionPl)
 
@@ -215,19 +208,27 @@ function missFunc(id, coord) {
 //счет
 let countPlayer = 0;
 let countOpp = 0;
+document.getElementById('textCount').value = countPlayer + " : " + countOpp;
+
 function countFunc(result) {
     if (result == 0) {
         countPlayer++;
         console.log("Счет: " + countPlayer + " / " + countOpp)
-        if (countPlayer == 4) alert("Victory!");
-        else gunFunc();
+        document.getElementById('textCount').value = countPlayer + " : " + countOpp;
+        if (countPlayer == 4) setTimeout(()=>alert("Victory!"),500);
+        else setTimeout(()=>gunFunc(),500);
     }
     else {
         countOpp++;
+        document.getElementById('textCount').value = countPlayer + " : " + countOpp;
         console.log("Счет: " + countPlayer + " / " + countOpp)
-        if (countOpp == 4) alert("Game over:(");
-        else gunOppFunc();
+        if (countOpp == 4) setTimeout(()=>alert("Game over:("),500);
+        else setTimeout(()=>gunOppFunc(),500);
     }
+}
+
+function countText() {
+
 }
 
 //ход противника
@@ -240,7 +241,6 @@ function gunOppFunc() {
     console.log("comp | " + arrCoord[rand] + " массив: " + arrMotionOp);
     if (checkShotFunc(1, arrCoord[rand]) == true) hitFunc(1, arrCoord[rand]);
     else missFunc(1, arrCoord[rand]);
-
 }
 
 // проверка на уникальность хода
