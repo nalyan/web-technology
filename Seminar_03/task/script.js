@@ -80,7 +80,7 @@ function input(id, n, text) {
             ctx.drawImage(imgTank, xBegin + coordX, yBegin + coordY);
         }
     }
-    
+
     if (id == 0) setTimeout(() => play(), 500);
     else if (id == 1) return inputPlayer;
 }
@@ -89,14 +89,6 @@ function input(id, n, text) {
 function check(input) {
     for (let j = 0; j < 36; j++) {
         if (input === arrCoord[j]) return true;
-    }
-}
-
-//функция проверки повторного ввода
-function checkRepeatFunc(input) {
-    for (let j = 0; j < arrMotionPl.length; j++) {
-        if (input === arrMotionPl[j]) return true;
-        
     }
 }
 
@@ -134,10 +126,10 @@ function coordOpp() {
     for (let i = 0; i < 4; i++) {
         let checkCoordOpp;
         var rand = Math.floor(Math.random() * arrCoord.length) // рандомная позиция массива
-        for(let j=0; j<arrCoordOpp.length; j++) {
-            if(arrCoord[rand]==arrCoordOpp[j]) checkCoordOpp = false; //проверка уникальности
+        for (let j = 0; j < arrCoordOpp.length; j++) {
+            if (arrCoord[rand] == arrCoordOpp[j]) checkCoordOpp = false; //проверка уникальности
         }
-        if(checkCoordOpp!==false) arrCoordOpp[i] = arrCoord[rand];
+        if (checkCoordOpp !== false) arrCoordOpp[i] = arrCoord[rand];
         else i--
     }
     console.log(arrCoordOpp);
@@ -154,17 +146,20 @@ function checkHitShotFunc(inputShot) {
 // бой
 var arrMotionPl = new Array;
 function gunFunc() {
-    let shot = input(1, 1, "Введите координаты выстрела");
     let checkRepeat = checkRepeatFunc(shot);
+    do var shot = input(1, 1, "Введите координаты выстрела")
+    while (checkRepeatFunc(shot) == true);
     let checkShot = checkShotFunc(0, shot);
     let checkHitShot = checkHitShotFunc(shot)
-    if (checkRepeat == true) {
-        alert("Повторный ввод!");
-        gunFunc();
-    }
+
+
+    //if (checkRepeat == true) {
+    //  alert("Повторный ввод!");
+    //shot = input(1, 1, "Введите координаты выстрела");
+    //}
     arrMotionPl[arrMotionPl.length] = shot;
     console.log("play | " + shot + " массив: " + arrMotionPl)
-    
+
     if (checkShot == true && checkHitShot !== true) {  // проверка ввода и уникальности попадания
         arrHitShot[arrHitShot.length] = shot;
         console.log("arrHitShot: " + arrHitShot);
@@ -173,11 +168,21 @@ function gunFunc() {
     else missFunc(0, shot);
 }
 
+//функция проверки повторного ввода
+function checkRepeatFunc(input) {
+    for (let j = 0; j < arrMotionPl.length; j++) {
+        if (input === arrMotionPl[j]) {
+            alert("Повторный ввод!")
+            return true;
+        }
+    }
+}
+
 //проверка попадания
 function checkShotFunc(id, inputShot) {
     for (let j = 0; j < 4; j++) {
-        if (id==0 && inputShot === arrCoordOpp[j]) return true;
-        else if (id==1 && inputShot === arrCoordPlayer[j]) return true;
+        if (id == 0 && inputShot === arrCoordOpp[j]) return true;
+        else if (id == 1 && inputShot === arrCoordPlayer[j]) return true;
     }
 }
 
@@ -187,7 +192,7 @@ function hitFunc(id, coord) {
     else changeCoord(0, coord);
     let z = ctx.drawImage(imgHit, xBegin + coordX, yBegin + coordY); //async и await, чтобы отрисовка прошла перед тем, как уйдет в функцию
     setTimeout(() => alert("Попал!"), 1);
-    if(id==0) setTimeout(() => countFunc(0), 5);
+    if (id == 0) setTimeout(() => countFunc(0), 5);
     else setTimeout(() => countFunc(1), 1);
 }
 
@@ -228,20 +233,20 @@ function countFunc(result) {
 //ход противника
 let arrMotionOp = new Array;
 function gunOppFunc() {
-    var rand = Math.floor(Math.random() * arrCoord.length);
-    if(checkMotionFunc(arrCoord[rand])!==true) checkShotFunc(1, arrCoord[rand]);
-    else gunOppFunc();
+    do var rand = Math.floor(Math.random() * arrCoord.length);
+    while (checkMotionFunc(arrCoord[rand]) == true);
+    checkShotFunc(1, arrCoord[rand]);
     arrMotionOp[arrMotionOp.length] = arrCoord[rand];
     console.log("comp | " + arrCoord[rand] + " массив: " + arrMotionOp);
-    if(checkShotFunc(1, arrCoord[rand])==true) hitFunc(1, arrCoord[rand]);
+    if (checkShotFunc(1, arrCoord[rand]) == true) hitFunc(1, arrCoord[rand]);
     else missFunc(1, arrCoord[rand]);
-    
+
 }
 
 // проверка на уникальность хода
-function checkMotionFunc (input) {
-    for(let i=0; i<arrMotionOp.length; i++) {
-        if(input==arrMotionOp[i]) {
+function checkMotionFunc(input) {
+    for (let i = 0; i < arrMotionOp.length; i++) {
+        if (input == arrMotionOp[i]) {
             console.log("Не прошла проверка уникальности: " + input)
             return true;
         }
